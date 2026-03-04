@@ -43,7 +43,9 @@ public class OperationRepositoryAdapter implements OperationRepositoryPort {
                 })
                 .map(this::toDomain);
     }
-
+    /*
+        * Buscar operación por ID, si no existe retornar Mono.empty()
+     */
     @Override
     public Mono<Operation> findById(String operationId) {
         return repository.findById(operationId)
