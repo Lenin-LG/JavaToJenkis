@@ -1,5 +1,5 @@
 # Usa una imagen base de Java
-FROM openjdk:17-jdk-slim
+FROM openjdk:21-jdk-slim
 
 # Directorio de la app en el contenedor
 WORKDIR /app
