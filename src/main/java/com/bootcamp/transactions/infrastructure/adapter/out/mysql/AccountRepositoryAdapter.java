@@ -13,6 +13,9 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
 
     private final SpringDataAccountRepository repository;
 
+    /*
+        * Buscar cuenta por ID, si no existe lanzar excepción
+     */
     @Override
     public Mono<Account> findById(String accountId) {
         return repository.findById(accountId)
@@ -20,6 +23,9 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
                 .map(this::toDomain);
     }
 
+    /*
+        * Guardar cuenta, si no existe crear nueva, si existe actualizar (optimistic locking)
+     */
     @Override
     public Mono<Account> save(Account account) {
 
@@ -34,7 +40,9 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
         return repository.save(entity)
                 .map(this::toDomain);
     }
-
+    /*
+        * Convertir entidad a dominio
+     */
     private Account toDomain(AccountEntity entity) {
         return new Account(
                 entity.getAccountId(),
