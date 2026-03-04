@@ -15,6 +15,9 @@ public class OperationRepositoryAdapter implements OperationRepositoryPort {
 
     private final SpringDataOperationRepository repository;
 
+    /*
+        * Guardar operación, si no existe crear nueva, si existe actualizar (optimistic locking)
+     */
     @Override
     public Mono<Operation> save(Operation operation) {
 
