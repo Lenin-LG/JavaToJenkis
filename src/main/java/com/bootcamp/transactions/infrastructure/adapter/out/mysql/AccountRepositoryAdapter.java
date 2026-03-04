@@ -40,7 +40,9 @@ public class AccountRepositoryAdapter implements AccountRepositoryPort {
         return repository.save(entity)
                 .map(this::toDomain);
     }
-
+    /*
+        * Convertir entidad a dominio
+     */
     private Account toDomain(AccountEntity entity) {
         return new Account(
                 entity.getAccountId(),
