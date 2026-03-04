@@ -51,7 +51,9 @@ public class OperationRepositoryAdapter implements OperationRepositoryPort {
         return repository.findById(operationId)
                 .map(this::toDomain);
     }
-
+    /*
+        * Convertir entidad a dominio
+     */
     private Operation toDomain(OperationEntity entity) {
         return Operation.restore(
                 entity.getOperationId(),
