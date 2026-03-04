@@ -13,6 +13,9 @@ public class BalanceService implements GetBalanceUseCase {
 
     private final AccountRepositoryPort accountRepository;
 
+    /*
+        * Para consultar el saldo, simplemente buscamos la cuenta por su ID y mapeamos la información relevante a un BalanceResponse.
+     */
     @Override
     public Mono<BalanceResponse> getBalance(String accountId) {
 
