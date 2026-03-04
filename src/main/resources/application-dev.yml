@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:mysql://testv5.mysql.database.azure.com:3306/transactions
+    username: userlenin
+    password: Lalg1704
+
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+    io.r2dbc: DEBUG
