@@ -1,5 +1,5 @@
 # Usa una imagen base de Java
-FROM eclipse-temurin:21-jdk-slim
+FROM eclipse-temurin:21-jdk
 
 # Directorio de la app en el contenedor
 WORKDIR /app
