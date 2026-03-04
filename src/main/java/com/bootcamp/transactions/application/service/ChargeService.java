@@ -25,6 +25,14 @@ public class ChargeService implements ChargeUseCase {
     private final OperationRepositoryPort operationRepository;
     private final TransactionalOperator txOperator;
 
+    /*
+        * Para aplicar un cargo, seguimos estos pasos:
+        * 1. Buscar la cuenta por su ID, si no existe lanzar excepción
+        * 2. Verificar que la moneda del cargo coincida con la moneda de la cuenta, si no lanzar excepción
+        * 3. Aplicar el cargo a la cuenta (restar el monto)
+        * 4. Crear una nueva operación de tipo CHARGE con estado COMPLETED
+        * 5. Guardar la cuenta actualizada y la operación en la base de datos
+     */
     @Override
     public Mono<OperationResponse> charge(ChargeRequest request) {
 
@@ -54,6 +62,9 @@ public class ChargeService implements ChargeUseCase {
         ).single(); // importante
     }
 
+    /*
+        * Construir la respuesta a partir de la operación y el saldo actualizado de la cuenta
+     */
     private OperationResponse buildResponse(Operation op, BigDecimal balanceAfter) {
         return new OperationResponse(
                 op.getOperationId(),
