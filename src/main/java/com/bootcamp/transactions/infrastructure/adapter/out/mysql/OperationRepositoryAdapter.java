@@ -15,6 +15,9 @@ public class OperationRepositoryAdapter implements OperationRepositoryPort {
 
     private final SpringDataOperationRepository repository;
 
+    /*
+        * Guardar operación, si no existe crear nueva, si existe actualizar (optimistic locking)
+     */
     @Override
     public Mono<Operation> save(Operation operation) {
 
@@ -40,13 +43,17 @@ public class OperationRepositoryAdapter implements OperationRepositoryPort {
                 })
                 .map(this::toDomain);
     }
-
+    /*
+        * Buscar operación por ID, si no existe retornar Mono.empty()
+     */
     @Override
     public Mono<Operation> findById(String operationId) {
         return repository.findById(operationId)
                 .map(this::toDomain);
     }
-
+    /*
+        * Convertir entidad a dominio
+     */
     private Operation toDomain(OperationEntity entity) {
         return Operation.restore(
                 entity.getOperationId(),
