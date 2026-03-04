@@ -62,6 +62,9 @@ public class ChargeService implements ChargeUseCase {
         ).single(); // importante
     }
 
+    /*
+        * Construir la respuesta a partir de la operación y el saldo actualizado de la cuenta
+     */
     private OperationResponse buildResponse(Operation op, BigDecimal balanceAfter) {
         return new OperationResponse(
                 op.getOperationId(),
