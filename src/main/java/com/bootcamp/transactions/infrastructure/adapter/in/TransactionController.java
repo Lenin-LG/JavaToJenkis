@@ -43,4 +43,11 @@ public class TransactionController {
         return reversalUseCase.reverse(operationId)
                 .map(res -> ResponseEntity.status(201).body(res));
     }
+    /**
+     * Hellow word 1
+     */
+    @GetMapping("/hello")
+    public Mono<ResponseEntity<String>> hello() {
+        return Mono.just(ResponseEntity.ok("Hello, World!"));
+    }
 }
