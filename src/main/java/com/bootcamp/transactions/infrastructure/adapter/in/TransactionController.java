@@ -57,4 +57,9 @@ public class TransactionController {
     public Mono<ResponseEntity<String>> hello2() {
         return Mono.just(ResponseEntity.ok("Hello, World! 2"));
     }
+    /**
+     * Hellow word 3
+     */    @GetMapping("/hello3")
+    public Mono<ResponseEntity<String>> hello3() {
+        return Mono.just(ResponseEntity.ok("Hello, World! 3"));}
 }
