@@ -1,0 +1,59 @@
+pipeline {
+
+    tools {
+        maven 'Maven3'
+    }
+
+    agent any
+
+    environment {
+        registryName = "myacrrepo3210"
+        registryCredential = 'ACR'
+        dockerImage = ''
+        registryUrl = 'myacrrepo3210.azurecr.io'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/TU_USUARIO/TU_REPO.git'
+            }
+        }
+
+        stage('Build JAR') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registryName}/springboot-app")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry("https://${registryUrl}", registryCredential) {
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to AKS') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'K8S']) {
+                        sh 'kubectl apply -f k8s-deployment.yaml'
+                    }
+                }
+            }
+        }
+
+    }
+}
