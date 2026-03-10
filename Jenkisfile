@@ -1,59 +1,54 @@
 pipeline {
-
-    tools {
-        maven 'Maven3'
-    }
-
     agent any
-
-    environment {
-        registryName = "myacrrepo3210"
-        registryCredential = 'ACR'
-        dockerImage = ''
-        registryUrl = 'myacrrepo3210.azurecr.io'
+    triggers {
+        githubPush()
     }
-
+    tools{
+        maven "maven"
+    }
+    environment{
+        registryName ="leninacr12345"
+        registryCredentials = "ACR"
+        registryUrl = "leninacr12345.azurecr.io"
+        dockerImage = ""
+    }
     stages {
-
-        stage('Checkout') {
+        stage('checkout') {
             steps {
-                git 'https://github.com/TU_USUARIO/TU_REPO.git'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Lenin-LG/JavaToJenkis']])
             }
         }
-
-        stage('Build JAR') {
-            steps {
-                sh 'mvn clean package'
+        stage('build'){
+            steps{
+                sh "mvn clean install"
             }
         }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImage = docker.build("${registryName}/springboot-app")
+        stage('build image'){
+            steps{
+                script{
+                   dockerImage = docker.build registryName
                 }
             }
         }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry("https://${registryUrl}", registryCredential) {
-                        dockerImage.push('latest')
+        stage('Push image'){
+            steps{
+                script{
+                    docker.withRegistry("http://${registryUrl}",registryCredentials){
+                        dockerImage.push()
                     }
+
                 }
             }
         }
-
-        stage('Deploy to AKS') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'K8S']) {
-                        sh 'kubectl apply -f k8s-deployment.yaml'
-                    }
+        stage('deploy to AKS'){
+            steps{
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                        sh """
+                              kubectl apply -f k8s-deployment.yaml
+                              kubectl rollout restart deployment springboot-app
+                          """
                 }
             }
         }
-
     }
 }
