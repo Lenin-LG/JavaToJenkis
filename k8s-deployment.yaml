@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: springboot-app
-          image: myacrrepo3210.azurecr.io/springboot-app:latest
+          image: leninacr12345.azurecr.io/leninacr12345:latest
           ports:
             - containerPort: 8080
 ---
