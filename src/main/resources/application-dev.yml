@@ -1,6 +1,6 @@
 spring:
   r2dbc:
-    url: r2dbc:mysql://testv5.mysql.database.azure.com:3306/transactions
+    url: r2dbc:mysql://dblenin3274864.mysql.database.azure.com:3306/transactions
     username: userlenin
     password: Lalg1704
 
